@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>EfCore.WhereIn</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Shazad A. Khan</Authors>
+    <Owners>Shazad A. Khan</Owners>
+    <Description>Forces EF Core to inline IN ( … ) instead of OPENJSON when filtering by collections.</Description>
+    <PackageTags>efcore;sqlserver;linq;wherein;in-clause;performance</PackageTags>
+    <RepositoryUrl>https://github.com/sak/EfCore.WhereIn</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/sak/EfCore.WhereIn</PackageProjectUrl>
+    <Copyright>Copyright © Shazad A. Khan 2024</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>false</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net10.0' ">
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>
