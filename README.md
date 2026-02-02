@@ -3,7 +3,7 @@
 [![NuGet version](https://img.shields.io/nuget/v/EfCore.WhereIn.svg)](https://www.nuget.org/packages/EfCore.WhereIn)
 [![NuGet downloads](https://img.shields.io/nuget/dt/EfCore.WhereIn.svg)](https://www.nuget.org/packages/EfCore.WhereIn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
-[![Build Status](https://github.com/sak/EfCore.WhereIn/actions/workflows/build.yml/badge.svg)](https://github.com/sak/EfCore.WhereIn/actions)
+[![Build Status](https://github.com/sak-ecoveritas/EfCore.WhereIn/actions/workflows/ci.yml/badge.svg)](https://github.com/sak-ecoveritas/EfCore.WhereIn/actions)
 ![.NET](https://img.shields.io/badge/.NET-netstandard2.0%20%7C%20net8.0%20%7C%20net10.0-blue)
 
 ---
