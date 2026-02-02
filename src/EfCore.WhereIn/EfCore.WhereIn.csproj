@@ -9,11 +9,11 @@
     <Owners>Shazad A. Khan</Owners>
     <Description>Forces EF Core to inline IN ( … ) instead of OPENJSON when filtering by collections.</Description>
     <PackageTags>efcore;sqlserver;linq;wherein;in-clause;performance</PackageTags>
-    <RepositoryUrl>https://github.com/sak/EfCore.WhereIn</RepositoryUrl>
+    <RepositoryUrl>https://github.com/sak-ecoveritas/EfCore.WhereIn</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/sak/EfCore.WhereIn</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/sak-ecoveritas/EfCore.WhereIn</PackageProjectUrl>
     <Copyright>Copyright © Shazad A. Khan 2024</Copyright>
   </PropertyGroup>
 
