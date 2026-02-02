@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>EfCore.WhereIn</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Shazad A. Khan</Authors>
     <Owners>Shazad A. Khan</Owners>
     <Description>Forces EF Core to inline IN ( … ) instead of OPENJSON when filtering by collections.</Description>
