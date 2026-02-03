@@ -8,11 +8,13 @@
 
 ---
 
-**EfCore.WhereIn** is a lightweight extension library for Entity Framework Core that forces SQL Server to generate inline `IN (...)` clauses instead of using `OPENJSON` when filtering by collections. This improves query performance and compatibility, especially for large or frequently-used `IN` queries.
+**EfCore.WhereIn** provides two extension classes:
+- `WhereInExtensions`: Standard `WhereIn` and `WhereNotIn` methods (enforce SQL Server parameter limit).
+- `WhereInBatchedExtensions`: `WhereInBatched` method (supports arbitrarily large collections via batching, may impact performance).
 
 ---
 
-## 🚀 Installation
+## Installation
 
 Install via NuGet Package Manager:
 
@@ -26,7 +28,7 @@ Install via NuGet Package Manager:
 
 ---
 
-## 📖 Usage
+## Usage
 
 Add the namespace:
 
@@ -42,6 +44,10 @@ var result = dbContext.Entities.WhereIn(e => e.Id, ids).ToList();
 
 // Or for NOT IN
 var excluded = dbContext.Entities.WhereNotIn(e => e.Id, ids).ToList();
+
+// For arbitrarily large collections (batching, may impact performance)
+var largeIds = Enumerable.Range(1, 5000).ToArray();
+var largeResult = dbContext.Entities.WhereInBatched(e => e.Id, largeIds).ToList();
 ```
 
 ### SQL Output Example
@@ -52,7 +58,7 @@ SELECT ... FROM [Entities] WHERE [Id] IN (1, 2, 3)
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 EF Core (with SQL Server) normally translates `Where(x => values.Contains(x.Id))` to use `OPENJSON`, which can be less efficient and harder to optimize. This library uses expression trees and `HashSet<T>` to force EF Core to generate inline `IN (...)` SQL, ensuring better performance and compatibility.
 
@@ -64,17 +70,22 @@ EF Core (with SQL Server) normally translates `Where(x => values.Contains(x.Id))
   ```sql
   WHERE [Id] IN (1, 2, 3)
   ```
+- **With EfCore.WhereInBatched:**
+  ```sql
+  WHERE [Id] IN (1, 2, ..., 2100) OR [Id] IN (2101, ..., 4200) OR ...
+  ```
 
 ---
 
-## 🧩 API Reference
+## API Reference
 
 - `IQueryable<T> WhereIn<T, TValue>(this IQueryable<T>, Expression<Func<T, TValue>>, IEnumerable<TValue>)`
 - `IQueryable<T> WhereNotIn<T, TValue>(this IQueryable<T>, Expression<Func<T, TValue>>, IEnumerable<TValue>)`
+- `IQueryable<T> WhereInBatched<T, TValue>(this IQueryable<T>, Expression<Func<T, TValue>>, IEnumerable<TValue>)`
 
 ---
 
-## 🖥️ Compatibility
+## Compatibility
 
 | EF Core | SQL Server | .NET Target Frameworks           |
 |---------|------------|----------------------------------|
@@ -82,37 +93,55 @@ EF Core (with SQL Server) normally translates `Where(x => values.Contains(x.Id))
 
 ---
 
-## 🧪 Testing
+## Testing
 
 - Includes xUnit tests verifying:
   - SQL contains `IN (...)`
   - SQL does **not** contain `OPENJSON`
-  - `WhereIn` and `WhereNotIn` return correct results
+  - `WhereIn`, `WhereNotIn`, and `WhereInBatched` return correct results
+
+### Running Tests
+
+To run tests locally:
+
+```shell
+cd tests/EfCore.WhereIn.Tests
+# .NET CLI
+ dotnet test
+```
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome! Please open an issue or submit a pull request.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](../LICENSE).
 
 ---
 
-## 📚 More Information
+## More Information
 
 - [NuGet Package](https://www.nuget.org/packages/EfCore.WhereIn)
-- [GitHub Repository](https://github.com/sak/EfCore.WhereIn)
+- [GitHub Repository](https://github.com/sak-ecoveritas/EfCore.WhereIn)
+
+---
+
+## Further Reading
+
+- [EF Core 10.0: Improved translation for parameterized collection](https://learn.microsoft.com/en-us/ef/core/what-is-new/ef-core-10.0/whatsnew#improved-translation-for-parameterized-collection)
+- [EF Core Issue #32365: Inline IN clause for small collections](https://github.com/dotnet/efcore/issues/32365)
+- [EF Core Issue #34347: Always inline IN clause](https://github.com/dotnet/efcore/issues/34347)
 
 ---
 
 ### Why not just use `Contains`?
 
-EF Core's default translation for `Contains` with SQL Server uses `OPENJSON`, which can be less efficient and less compatible with some SQL Server versions and query plans. This library ensures you always get the most efficient inline `IN (...)` clause.
+EF Core's default translation for `Contains` with SQL Server uses `OPENJSON`, which can be less efficient and less compatible with some SQL Server versions and query plans. This library ensures you always get the most efficient inline `IN (...)` clause, and with batching support, you can handle arbitrarily large collections (with a performance tradeoff).
 
 ---
 
@@ -122,3 +151,4 @@ EF Core's default translation for `Contains` with SQL Server uses `OPENJSON`, wh
 |------------------|---------------------------------------------------|
 | Default Contains | `WHERE [Id] IN (SELECT [value] FROM OPENJSON(...))`|
 | EfCore.WhereIn   | `WHERE [Id] IN (1, 2, 3)`                         |
+| EfCore.WhereInBatched | `WHERE [Id] IN (1, ..., 2100) OR [Id] IN (2101, ...)` |
