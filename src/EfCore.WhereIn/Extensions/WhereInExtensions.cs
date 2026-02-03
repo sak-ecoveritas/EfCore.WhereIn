@@ -97,7 +97,7 @@ namespace EfCore.WhereIn
         /// exists in the provided <paramref name="array"/>. It does this by creating a HashSet from the array and calling its Contains method
         /// for each entity. This allows EF Core to translate the predicate into an efficient SQL IN clause.
         /// </remarks>
-        private static Expression<Func<T, bool>> BuildInPredicate<T, TValue>(Expression<Func<T, TValue>> selector, TValue[] array)
+        internal static Expression<Func<T, bool>> BuildInPredicate<T, TValue>(Expression<Func<T, TValue>> selector, TValue[] array)
         {
             // Create a constant expression representing a HashSet containing all values to match
             var hashSet = Expression.Constant(new HashSet<TValue>(array));
